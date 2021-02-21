@@ -50,36 +50,34 @@
 <script>
     $(function () {
 
-      $('.js-authority-select').on('change', function () {
-        $('#loader').css('visibility', 'visible');
+        $('.js-authority-select').on('change', function () {
+            $('#loader').css('visibility', 'visible');
             loadAuthority(this.value);
         });
 
         $.get('/api', {}, function (resp) {
             var selectElem = $('.js-authority-select');
             selectElem.html('');
+            selectElem.append('<option value="-1"> Sample one </option>');
             $.each(resp, function (key, authority) {
-                if(key === 0){
-                    loadAuthority(authority.id);
+                if (key === 0) {
+                    $('#loader').css('visibility', 'hidden');
                 }
                 selectElem.append('<option value="' + authority.id + '">' + authority.name + '</option>');
             });
-
         });
     });
 
-  function loadAuthority(id) {
+    function loadAuthority(id) {
         $.get('/api/' + id, {}, function (resp) {
             var tableElem = $('.js-authority-table');
             tableElem.html('');
             $.each(resp, function (key, rating) {
                 tableElem.append('<tr><td>' + rating.name + '</td><td>' + rating.value.toFixed(1) + '%</td></tr>');
             });
-          $('#loader').css('visibility', 'hidden');
+            $('#loader').css('visibility', 'hidden');
         });
     }
 </script>
-
 </body>
 </html>
-
